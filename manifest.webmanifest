@@ -1,0 +1,17 @@
+{
+  "name": "하루중국어 100",
+  "short_name": "하루중국어",
+  "description": "중국어 기초 단어 100개와 입문 문법 20과 학습 앱",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fffaf8",
+  "theme_color": "#e94b4b",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
