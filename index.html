@@ -11,7 +11,7 @@
   <meta name="format-detection" content="telephone=no" />
   <meta name="color-scheme" content="light" />
   <meta name="description" content="중국어 기초 단어 100개, 실생활 회화 표현 50개와 입문 문법 20과를 음성과 함께 공부하는 모바일 웹앱" />
-  <title>하루중국어 100 · 회화 자동재생</title>
+  <title>하루중국어 100 · 음색 통일판</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
@@ -140,11 +140,10 @@
                 <option value="1.02">빠르게 1.0×</option>
               </select>
             </label>
-            <label>한국어 목소리
-              <select id="conversationKoVoiceStyle">
-                <option value="soft" selected>밝고 부드럽게</option>
-                <option value="cute">귀엽게</option>
-                <option value="natural">자연스럽게</option>
+            <label>한국어 음성
+              <select id="conversationKoVoiceMode">
+                <option value="matched" selected>중국어와 같은 음색 우선</option>
+                <option value="default">기기 기본 한국어 음성</option>
               </select>
             </label>
             <label>중국어→한국어 간격
@@ -169,7 +168,7 @@
             <button class="player-skip" id="conversationAudioNext" aria-label="다음 회화 표현">›</button>
             <button class="secondary-btn" id="conversationAudioStop">■ 정지</button>
           </div>
-          <p class="grammar-player-help">처음에는 자동 재생 버튼을 한 번 눌러야 합니다. 한국어는 기기에서 사용 가능한 부드러운 여성형 음성을 우선 선택하며, 중국어 뒤 간격은 기본 1.5초입니다.</p>
+          <p class="grammar-player-help">처음에는 자동 재생 버튼을 한 번 눌러야 합니다. 한국어는 중국어 음성과 같은 TTS 제조사·자연형 계열·성별을 우선 매칭하며, 속도와 음높이도 동일하게 재생합니다. 중국어 뒤 간격은 기본 1.5초입니다.</p>
         </section>
 
         <section class="section-head conversation-vocab-head">

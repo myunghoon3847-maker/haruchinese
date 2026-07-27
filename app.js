@@ -173,43 +173,74 @@ function showToast(message){
   clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>t.classList.remove('show'),1600);
 }
 
-const KOREAN_VOICE_STYLE_KEY='hcKoreanVoiceStyle';
+const KOREAN_VOICE_MODE_KEY='hcKoreanVoiceMode';
 const CONVERSATION_GAP_KEY='hcConversationPhaseGap';
 
-function koreanVoiceStyle(){
-  return $('#conversationKoVoiceStyle')?.value || storage.getItem(KOREAN_VOICE_STYLE_KEY) || 'soft';
+function koreanVoiceMode(){
+  return $('#conversationKoVoiceMode')?.value || storage.getItem(KOREAN_VOICE_MODE_KEY) || 'matched';
 }
 
-function koreanVoiceProfile(style=koreanVoiceStyle()){
-  if(style==='cute') return {rate:.91,pitch:1.14,volume:1};
-  if(style==='natural') return {rate:.96,pitch:1.02,volume:1};
-  return {rate:.92,pitch:1.08,volume:1};
+function voiceProvider(voice){
+  const name=(voice?.name||'').toLowerCase();
+  if(name.includes('microsoft')) return 'microsoft';
+  if(name.includes('google')) return 'google';
+  if(name.includes('samsung')) return 'samsung';
+  if(name.includes('apple') || name.includes('siri')) return 'apple';
+  if(name.includes('naver') || name.includes('clova')) return 'naver';
+  if(name.includes('amazon') || name.includes('polly')) return 'amazon';
+  return name.split(/[\s_-]+/).filter(Boolean)[0] || 'other';
 }
 
-function voiceScore(voice,lang){
+function voiceQuality(voice){
+  const name=(voice?.name||'').toLowerCase();
+  if(/neural|natural|premium|enhanced|online/.test(name)) return 'natural';
+  return 'standard';
+}
+
+function voiceGender(voice){
+  const name=(voice?.name||'').toLowerCase();
+  if(/female|woman|여성|sunhi|선희|seoyeon|서연|yuna|유나|heami|혜미|sora|소라|jihye|지혜|youngmi|영미|nari|나리|ara|아라|xiaoxiao|xiaoyi|xiaomeng|huihui|yaoyao/.test(name)) return 'female';
+  if(/male|man|남성|injoon|minjoon|hyunsu|yunxi|yunyang|kangkang/.test(name)) return 'male';
+  return 'unknown';
+}
+
+function voiceScore(voice,lang,referenceVoice=null){
   const target=lang.toLowerCase();
   const prefix=target.split('-')[0];
   const voiceLang=(voice.lang||'').toLowerCase();
   const name=(voice.name||'').toLowerCase();
   let score=0;
-  if(voiceLang===target) score+=120;
-  else if(voiceLang.startsWith(prefix)) score+=80;
+  if(voiceLang===target) score+=140;
+  else if(voiceLang.startsWith(prefix)) score+=95;
   if(voice.default) score+=8;
   if(voice.localService) score+=4;
-  if(/natural|neural|premium|enhanced/.test(name)) score+=45;
-  if(prefix==='ko'){
-    const preferred=['sunhi','선희','seoyeon','서연','yuna','유나','heami','혜미','sora','소라','jihye','지혜','youngmi','영미','nari','나리','ara','아라','google 한국의','korean female','여성'];
-    preferred.forEach((token,index)=>{ if(name.includes(token)) score+=70-index*2; });
-    if(/injoon|minjoon|hyunsu|남성|male/.test(name)) score-=35;
+  if(/natural|neural|premium|enhanced|online/.test(name)) score+=55;
+  if(referenceVoice){
+    if(voiceProvider(voice)===voiceProvider(referenceVoice)) score+=180;
+    if(voiceQuality(voice)===voiceQuality(referenceVoice)) score+=55;
+    const refGender=voiceGender(referenceVoice);
+    if(refGender!=='unknown' && voiceGender(voice)===refGender) score+=70;
+    if(Boolean(voice.localService)===Boolean(referenceVoice.localService)) score+=12;
   }
   return score;
 }
 
-function pickVoice(lang){
+function pickVoice(lang, referenceVoice=null){
   const voices=speechSynthesis.getVoices();
   const prefix=lang.split('-')[0].toLowerCase();
   const matches=voices.filter(v=>(v.lang||'').toLowerCase().startsWith(prefix));
-  return matches.sort((a,b)=>voiceScore(b,lang)-voiceScore(a,lang))[0] || null;
+  return matches.sort((a,b)=>voiceScore(b,lang,referenceVoice)-voiceScore(a,lang,referenceVoice))[0] || null;
+}
+
+function chineseReferenceVoice(){
+  return pickVoice('zh-CN') || pickVoice('zh');
+}
+
+function speechVoice(lang){
+  if(lang.toLowerCase().startsWith('ko') && koreanVoiceMode()==='matched'){
+    return pickVoice(lang,chineseReferenceVoice()) || pickVoice(lang);
+  }
+  return pickVoice(lang);
 }
 
 function speak(text, lang='zh-CN', rate=.86){
@@ -217,13 +248,8 @@ function speak(text, lang='zh-CN', rate=.86){
   if(state.conversationAudio.active || state.conversationAudio.paused) stopConversationPlayback(true);
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text); u.lang=lang;
-  if(lang.toLowerCase().startsWith('ko')){
-    const profile=koreanVoiceProfile();
-    u.rate=profile.rate; u.pitch=profile.pitch; u.volume=profile.volume;
-  }else{
-    u.rate=rate; u.pitch=1; u.volume=1;
-  }
-  const voice=pickVoice(lang);
+  u.rate=rate; u.pitch=1; u.volume=1;
+  const voice=speechVoice(lang);
   if(voice) u.voice=voice;
   u.onerror=()=>showToast('음성을 재생하지 못했습니다. 기기의 TTS 설정을 확인해 주세요.');
   speechSynthesis.speak(u);
@@ -234,18 +260,18 @@ function conversationAudioSettings(){
     category: $('#conversationAudioCategory')?.value || '전체',
     mode: $('#conversationAudioMode')?.value || 'zh-ko',
     rate: Number($('#conversationAudioRate')?.value || .86),
-    koStyle: $('#conversationKoVoiceStyle')?.value || storage.getItem(KOREAN_VOICE_STYLE_KEY) || 'soft',
+    koMode: $('#conversationKoVoiceMode')?.value || storage.getItem(KOREAN_VOICE_MODE_KEY) || 'matched',
     phaseGap: Number($('#conversationPhaseGap')?.value || storage.getItem(CONVERSATION_GAP_KEY) || 1500),
     repeat: $('#conversationAudioRepeat')?.value || 'none'
   };
 }
 
 function restoreConversationAudioPreferences(){
-  const style=storage.getItem(KOREAN_VOICE_STYLE_KEY) || 'soft';
+  const mode=storage.getItem(KOREAN_VOICE_MODE_KEY) || 'matched';
   const gap=storage.getItem(CONVERSATION_GAP_KEY) || '1500';
-  const styleSelect=$('#conversationKoVoiceStyle');
+  const modeSelect=$('#conversationKoVoiceMode');
   const gapSelect=$('#conversationPhaseGap');
-  if(styleSelect && [...styleSelect.options].some(option=>option.value===style)) styleSelect.value=style;
+  if(modeSelect && [...modeSelect.options].some(option=>option.value===mode)) modeSelect.value=mode;
   if(gapSelect && [...gapSelect.options].some(option=>option.value===gap)) gapSelect.value=gap;
 }
 
@@ -332,13 +358,12 @@ function playConversationAudioPhase(){
   if(settings.mode==='zh' && p.phase!=='zh') p.phase='zh';
   const language=p.phase==='ko'?'ko-KR':p.phase==='en'?'en-US':'zh-CN';
   const text=p.phase==='ko'?item.ko:p.phase==='en'?item.en:item.zh;
-  const koProfile=koreanVoiceProfile(settings.koStyle);
-  const rate=p.phase==='zh'?settings.rate:p.phase==='ko'?koProfile.rate:.9;
+  const rate=p.phase==='zh'||p.phase==='ko'?settings.rate:.9;
   const token=p.token;
   const utterance=new SpeechSynthesisUtterance(text); utterance.lang=language; utterance.rate=rate;
-  utterance.pitch=p.phase==='ko'?koProfile.pitch:1;
-  utterance.volume=p.phase==='ko'?koProfile.volume:1;
-  const voice=pickVoice(language); if(voice)utterance.voice=voice;
+  utterance.pitch=1;
+  utterance.volume=1;
+  const voice=speechVoice(language); if(voice)utterance.voice=voice;
   p.speaking=true;
   updateConversationAudioUI();
   utterance.onend=()=>{
@@ -512,7 +537,7 @@ function makeWordCard(w){
   const speakBtn=el('button','speak-btn','🔊'); speakBtn.setAttribute('aria-label',`${w.hanzi} 중국어 듣기`); speakBtn.onclick=()=>speak(w.hanzi);
   const main=el('div','word-main',`<div class="word-hanzi"><strong>${w.hanzi}</strong><span>${w.pinyin}</span></div><div class="word-meta"><b>${w.koPron}</b><span>${w.ko}</span><span>EN · ${w.en}</span></div>`);
   const actions=el('div','word-actions');
-  const koAudio=el('button','','한'); koAudio.title='한국어 뜻 듣기'; koAudio.onclick=()=>speak(w.ko,'ko-KR',.92);
+  const koAudio=el('button','','한'); koAudio.title='한국어 뜻 듣기'; koAudio.onclick=()=>speak(w.ko,'ko-KR',.86);
   const enAudio=el('button','','EN'); enAudio.title='영어 뜻 듣기'; enAudio.onclick=()=>speak(w.en,'en-US',.86);
   const fav=el('button',state.favorites.has(w.id)?'active':'',state.favorites.has(w.id)?'★':'☆'); fav.title='즐겨찾기';
   fav.onclick=()=>{toggleFavorite(w.id);};
@@ -780,7 +805,7 @@ function bindEvents(){
   $('#conversationAudioCategory').addEventListener('change',()=>resetConversationAudioQueue(false));
   $('#conversationAudioMode').addEventListener('change',()=>{const wasActive=state.conversationAudio.active; stopConversationPlayback(true); state.conversationAudio.items=buildConversationAudioQueue(); state.conversationAudio.index=Math.min(state.conversationAudio.index,Math.max(0,state.conversationAudio.items.length-1)); updateConversationAudioUI(); if(wasActive)startConversationPlayback();});
   $('#conversationAudioRate').addEventListener('change',()=>{if(state.conversationAudio.active&&!state.conversationAudio.paused){state.conversationAudio.token++;speechSynthesis.cancel();state.conversationAudio.speaking=false;playConversationAudioPhase();}else updateConversationAudioUI();});
-  $('#conversationKoVoiceStyle').addEventListener('change',e=>{storage.setItem(KOREAN_VOICE_STYLE_KEY,e.target.value);if(state.conversationAudio.active&&!state.conversationAudio.paused){state.conversationAudio.token++;speechSynthesis.cancel();state.conversationAudio.speaking=false;playConversationAudioPhase();}showToast('한국어 목소리 느낌을 변경했습니다.');});
+  $('#conversationKoVoiceMode').addEventListener('change',e=>{storage.setItem(KOREAN_VOICE_MODE_KEY,e.target.value);if(state.conversationAudio.active&&!state.conversationAudio.paused){state.conversationAudio.token++;speechSynthesis.cancel();state.conversationAudio.speaking=false;playConversationAudioPhase();}showToast(e.target.value==='matched'?'한국어 음성을 중국어 음색과 맞춥니다.':'기기의 기본 한국어 음성을 사용합니다.');});
   $('#conversationPhaseGap').addEventListener('change',e=>{storage.setItem(CONVERSATION_GAP_KEY,e.target.value);showToast(`중국어와 한국어 사이 간격을 ${(Number(e.target.value)/1000).toFixed(1)}초로 변경했습니다.`);});
   $('#conversationAudioRepeat').addEventListener('change',updateConversationAudioUI);
   $('#flashcard').addEventListener('click',()=>$('#flashcard').classList.toggle('flipped'));
@@ -788,7 +813,7 @@ function bindEvents(){
   $('#prevCard').onclick=()=>changeCard(-1); $('#nextCard').onclick=()=>changeCard(1);
   $('#shuffleCards').onclick=()=>{state.cardDeck=randomItems(state.cardDeck,state.cardDeck.length);state.cardIndex=0;renderCard();showToast('카드를 섞었습니다.');};
   $('#cardSpeakZh').onclick=e=>{e.stopPropagation();speak(currentCard().hanzi);};
-  $('#cardSpeakKo').onclick=e=>{e.stopPropagation();speak(currentCard().ko,'ko-KR',.92);};
+  $('#cardSpeakKo').onclick=e=>{e.stopPropagation();speak(currentCard().ko,'ko-KR',.86);};
   $('#cardSpeakEn').onclick=e=>{e.stopPropagation();speak(currentCard().en,'en-US',.86);};
   $('#cardFavorite').onclick=()=>toggleFavorite(currentCard().id); $('#cardLearned').onclick=()=>toggleLearned(currentCard().id);
   $('#quizSpeak').onclick=()=>speak(state.quiz.questions[state.quiz.index].hanzi); $('#nextQuiz').onclick=nextQuiz; $('#restartQuiz').onclick=startQuiz;
