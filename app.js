@@ -174,10 +174,11 @@ function showToast(message){
 }
 
 const KOREAN_VOICE_MODE_KEY='hcKoreanVoiceMode';
+const GOOGLE_KOREAN_VOICE_LABEL='Google 한국의';
 const CONVERSATION_GAP_KEY='hcConversationPhaseGap';
 
 function koreanVoiceMode(){
-  return $('#conversationKoVoiceMode')?.value || storage.getItem(KOREAN_VOICE_MODE_KEY) || 'matched';
+  return 'google-ko';
 }
 
 function voiceProvider(voice){
@@ -232,13 +233,25 @@ function pickVoice(lang, referenceVoice=null){
   return matches.sort((a,b)=>voiceScore(b,lang,referenceVoice)-voiceScore(a,lang,referenceVoice))[0] || null;
 }
 
+function pickGoogleKoreanVoice(){
+  const voices=speechSynthesis.getVoices();
+  const koreanVoices=voices.filter(v=>(v.lang||'').toLowerCase().startsWith('ko'));
+  const normalized=value=>(value||'').toLowerCase().replace(/\s+/g,' ').trim();
+  const exact=koreanVoices.find(v=>normalized(v.name)==='google 한국의' && normalized(v.lang)==='ko-kr');
+  if(exact) return exact;
+  const named=koreanVoices.find(v=>normalized(v.name).includes('google 한국의'));
+  if(named) return named;
+  const googleKo=koreanVoices.find(v=>normalized(v.name).includes('google'));
+  return googleKo || null;
+}
+
 function chineseReferenceVoice(){
   return pickVoice('zh-CN') || pickVoice('zh');
 }
 
 function speechVoice(lang){
-  if(lang.toLowerCase().startsWith('ko') && koreanVoiceMode()==='matched'){
-    return pickVoice(lang,chineseReferenceVoice()) || pickVoice(lang);
+  if(lang.toLowerCase().startsWith('ko')){
+    return pickGoogleKoreanVoice() || pickVoice(lang);
   }
   return pickVoice(lang);
 }
@@ -260,18 +273,18 @@ function conversationAudioSettings(){
     category: $('#conversationAudioCategory')?.value || '전체',
     mode: $('#conversationAudioMode')?.value || 'zh-ko',
     rate: Number($('#conversationAudioRate')?.value || .86),
-    koMode: $('#conversationKoVoiceMode')?.value || storage.getItem(KOREAN_VOICE_MODE_KEY) || 'matched',
+    koMode: 'google-ko',
     phaseGap: Number($('#conversationPhaseGap')?.value || storage.getItem(CONVERSATION_GAP_KEY) || 1500),
     repeat: $('#conversationAudioRepeat')?.value || 'none'
   };
 }
 
 function restoreConversationAudioPreferences(){
-  const mode=storage.getItem(KOREAN_VOICE_MODE_KEY) || 'matched';
+  storage.setItem(KOREAN_VOICE_MODE_KEY,'google-ko');
   const gap=storage.getItem(CONVERSATION_GAP_KEY) || '1500';
   const modeSelect=$('#conversationKoVoiceMode');
   const gapSelect=$('#conversationPhaseGap');
-  if(modeSelect && [...modeSelect.options].some(option=>option.value===mode)) modeSelect.value=mode;
+  if(modeSelect) modeSelect.value='google-ko';
   if(gapSelect && [...gapSelect.options].some(option=>option.value===gap)) gapSelect.value=gap;
 }
 
@@ -805,7 +818,7 @@ function bindEvents(){
   $('#conversationAudioCategory').addEventListener('change',()=>resetConversationAudioQueue(false));
   $('#conversationAudioMode').addEventListener('change',()=>{const wasActive=state.conversationAudio.active; stopConversationPlayback(true); state.conversationAudio.items=buildConversationAudioQueue(); state.conversationAudio.index=Math.min(state.conversationAudio.index,Math.max(0,state.conversationAudio.items.length-1)); updateConversationAudioUI(); if(wasActive)startConversationPlayback();});
   $('#conversationAudioRate').addEventListener('change',()=>{if(state.conversationAudio.active&&!state.conversationAudio.paused){state.conversationAudio.token++;speechSynthesis.cancel();state.conversationAudio.speaking=false;playConversationAudioPhase();}else updateConversationAudioUI();});
-  $('#conversationKoVoiceMode').addEventListener('change',e=>{storage.setItem(KOREAN_VOICE_MODE_KEY,e.target.value);if(state.conversationAudio.active&&!state.conversationAudio.paused){state.conversationAudio.token++;speechSynthesis.cancel();state.conversationAudio.speaking=false;playConversationAudioPhase();}showToast(e.target.value==='matched'?'한국어 음성을 중국어 음색과 맞춥니다.':'기기의 기본 한국어 음성을 사용합니다.');});
+  $('#conversationKoVoiceMode').addEventListener('change',()=>{storage.setItem(KOREAN_VOICE_MODE_KEY,'google-ko');showToast('한국어 뜻 음성은 Google 한국의 (ko-KR)을 사용합니다.');});
   $('#conversationPhaseGap').addEventListener('change',e=>{storage.setItem(CONVERSATION_GAP_KEY,e.target.value);showToast(`중국어와 한국어 사이 간격을 ${(Number(e.target.value)/1000).toFixed(1)}초로 변경했습니다.`);});
   $('#conversationAudioRepeat').addEventListener('change',updateConversationAudioUI);
   $('#flashcard').addEventListener('click',()=>$('#flashcard').classList.toggle('flipped'));
@@ -834,6 +847,16 @@ function bindEvents(){
 }
 
 function init(){
+  if('speechSynthesis' in window){
+    const announceVoice=()=>{
+      const voice=pickGoogleKoreanVoice();
+      const select=$('#conversationKoVoiceMode');
+      if(select && !voice) select.options[0].textContent='Google 한국의 (미설치 · ko-KR 대체 음성 사용)';
+      else if(select) select.options[0].textContent='Google 한국의 (ko-KR)';
+    };
+    announceVoice();
+    speechSynthesis.addEventListener?.('voiceschanged',announceVoice,{once:true});
+  }
   if(WORDS.length!==100) console.error(`단어 수 오류: ${WORDS.length}`);
   if(CONVERSATIONS.length!==50) console.error(`회화 표현 수 오류: ${CONVERSATIONS.length}`);
   populateConversationCategories(); restoreConversationAudioPreferences(); populateCardCategories(); bindEvents(); updateMobileInstallButton(); renderHome(); renderCategoryFilters(); renderWords(); renderGrammarFilters(); renderGrammar(); resetConversationAudioQueue(true); renderCard(); renderFavorites(); startQuiz(); navigate('home');
