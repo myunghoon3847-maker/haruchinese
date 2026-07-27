@@ -4,10 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#e94b4b" />
-  <meta name="description" content="중국어 기초 단어 100개와 입문 문법 20과를 병음, 한국어식 발음, 한국어·영어 뜻과 음성으로 공부하는 웹앱" />
-  <title>하루중국어 100</title>
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="하루중국어" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="color-scheme" content="light" />
+  <meta name="description" content="중국어 기초 단어 100개, 실생활 회화 표현 50개와 입문 문법 20과를 음성과 함께 공부하는 모바일 웹앱" />
+  <title>하루중국어 100 · 회화 자동재생</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
+  <link rel="icon" href="favicon-16.png" type="image/png" sizes="16x16" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180" />
+  <meta name="msapplication-TileImage" content="icon-512.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -15,10 +25,10 @@
     <header class="topbar">
       <button class="icon-btn menu-btn" id="menuBtn" aria-label="메뉴 열기">☰</button>
       <div class="brand" aria-label="하루중국어 100">
-        <span class="brand-mark">中</span>
+        <img class="brand-mark" src="icon-192.png" alt="" width="40" height="40" />
         <div>
           <strong>하루중국어</strong>
-          <small>100단어 · 기초 문법</small>
+          <small>100단어 · 회화 · 문법</small>
         </div>
       </div>
       <button class="icon-btn" id="installBtn" aria-label="앱 설치" hidden>＋</button>
@@ -26,12 +36,12 @@
 
     <aside class="drawer" id="drawer" aria-hidden="true">
       <div class="drawer-head">
-        <div class="brand"><span class="brand-mark">中</span><strong>학습 메뉴</strong></div>
+        <div class="brand"><img class="brand-mark" src="icon-192.png" alt="" width="40" height="40" /><strong>학습 메뉴</strong></div>
         <button class="icon-btn" id="closeDrawerBtn" aria-label="메뉴 닫기">×</button>
       </div>
       <nav class="drawer-nav" aria-label="주요 메뉴">
         <button data-view="home" class="active">🏠 오늘 학습</button>
-        <button data-view="words">📚 100단어</button>
+        <button data-view="words">🗣️ 회화·어휘</button>
         <button data-view="grammar">🧩 기초 문법</button>
         <button data-view="cards">🃏 플래시카드</button>
         <button data-view="quiz">✍️ 퀴즈</button>
@@ -50,8 +60,8 @@
           <div class="hero-copy">
             <span class="eyebrow">每天学一点 · 매일 조금씩</span>
             <h1>중국어 첫걸음,<br><em>100단어</em>부터</h1>
-            <p>100단어와 기초 문법 20과를 한자·병음·한국어식 발음·한국어/영어 뜻, 중국어 음성으로 차근차근 익혀 보세요.</p>
-            <div class="hero-actions"><button class="primary-btn" data-go="words">단어 학습</button><button class="secondary-btn" data-go="grammar">문법 학습</button></div>
+            <p>실생활 회화 표현 50개, 기초 단어 100개와 문법 20과를 병음·한국어식 발음·음성으로 차근차근 익혀 보세요.</p>
+            <div class="hero-actions"><button class="primary-btn" data-go="words">회화 듣기</button><button class="secondary-btn" data-go="grammar">문법 학습</button></div>
           </div>
           <div class="hero-badge" aria-hidden="true">
             <span>你</span><span>好</span>
@@ -85,10 +95,86 @@
 
       <section class="view" id="wordsView">
         <div class="page-title">
-          <span class="eyebrow">VOCABULARY</span>
-          <h1>기초 단어 100</h1>
-          <p>검색하거나 주제별로 골라서 공부하세요.</p>
+          <span class="eyebrow">CONVERSATION & VOCABULARY</span>
+          <h1>회화·어휘 듣기</h1>
+          <p>실생활 표현을 자동으로 듣고, 아래에서 기초 단어를 찾아보세요.</p>
         </div>
+
+        <section class="grammar-player conversation-player card" aria-labelledby="conversationPlayerHeading">
+          <div class="grammar-player-head">
+            <div>
+              <span class="eyebrow">EVERYDAY CONVERSATION</span>
+              <h2 id="conversationPlayerHeading">회화 표현 자동 재생</h2>
+            </div>
+            <span class="player-state" id="conversationAudioState">대기</span>
+          </div>
+
+          <div class="grammar-player-now" aria-live="polite">
+            <small id="conversationAudioCategoryText">실생활 회화 50개를 준비했습니다.</small>
+            <strong id="conversationAudioSentence">자동 재생을 누르면 표현을 차례로 들려줍니다.</strong>
+            <span class="pinyin" id="conversationAudioPinyin"></span>
+            <span class="reading" id="conversationAudioKoPron"></span>
+            <p id="conversationAudioTranslation">중국어만 듣거나 한국어·영어 해석까지 이어서 들을 수 있습니다.</p>
+          </div>
+
+          <div class="grammar-audio-progress">
+            <div><span id="conversationAudioProgressText">0 / 0</span><span id="conversationAudioModeText">중국어 → 한국어</span></div>
+            <div class="progress-track"><span id="conversationAudioProgressBar"></span></div>
+          </div>
+
+          <div class="grammar-player-settings">
+            <label>회화 범위
+              <select id="conversationAudioCategory"></select>
+            </label>
+            <label>듣기 방식
+              <select id="conversationAudioMode">
+                <option value="zh">중국어만</option>
+                <option value="zh-ko" selected>중국어 → 한국어</option>
+                <option value="zh-ko-en">중국어 → 한국어 → 영어</option>
+              </select>
+            </label>
+            <label>중국어 속도
+              <select id="conversationAudioRate">
+                <option value="0.72">천천히 0.75×</option>
+                <option value="0.86" selected>보통 0.9×</option>
+                <option value="1.02">빠르게 1.0×</option>
+              </select>
+            </label>
+            <label>한국어 목소리
+              <select id="conversationKoVoiceStyle">
+                <option value="soft" selected>밝고 부드럽게</option>
+                <option value="cute">귀엽게</option>
+                <option value="natural">자연스럽게</option>
+              </select>
+            </label>
+            <label>중국어→한국어 간격
+              <select id="conversationPhaseGap">
+                <option value="900">0.9초</option>
+                <option value="1500" selected>1.5초</option>
+                <option value="2200">2.2초</option>
+              </select>
+            </label>
+            <label>반복 방식
+              <select id="conversationAudioRepeat">
+                <option value="none">마지막에서 종료</option>
+                <option value="all">선택 범위 반복</option>
+                <option value="item">현재 표현 반복</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="grammar-player-controls">
+            <button class="player-skip" id="conversationAudioPrev" aria-label="이전 회화 표현">‹</button>
+            <button class="primary-btn grammar-play-main" id="conversationAudioPlay">▶ 자동 재생</button>
+            <button class="player-skip" id="conversationAudioNext" aria-label="다음 회화 표현">›</button>
+            <button class="secondary-btn" id="conversationAudioStop">■ 정지</button>
+          </div>
+          <p class="grammar-player-help">처음에는 자동 재생 버튼을 한 번 눌러야 합니다. 한국어는 기기에서 사용 가능한 부드러운 여성형 음성을 우선 선택하며, 중국어 뒤 간격은 기본 1.5초입니다.</p>
+        </section>
+
+        <section class="section-head conversation-vocab-head">
+          <div><span class="eyebrow">BASIC VOCABULARY</span><h2>기초 단어 100</h2></div>
+        </section>
         <div class="search-box card">
           <span>⌕</span>
           <input id="searchInput" type="search" placeholder="중국어, 병음, 한국어, 영어 검색" autocomplete="off" />
@@ -216,12 +302,29 @@
 
     <nav class="bottom-nav" aria-label="하단 메뉴">
       <button data-view="home" class="active"><span>⌂</span>홈</button>
-      <button data-view="words"><span>文</span>단어</button>
+      <button data-view="words"><span>声</span>회화</button>
       <button data-view="grammar"><span>法</span>문법</button>
       <button data-view="cards"><span>▣</span>카드</button>
       <button data-view="quiz"><span>✓</span>퀴즈</button>
       <button data-view="favorites"><span>☆</span>저장</button>
     </nav>
+  </div>
+
+  <div class="mobile-guide" id="mobileGuide" hidden role="dialog" aria-modal="true" aria-labelledby="mobileGuideTitle">
+    <section class="mobile-guide-card card">
+      <div class="mobile-guide-head">
+        <h2 id="mobileGuideTitle">모바일에서 사용하는 방법</h2>
+        <button class="mobile-guide-close" id="closeMobileGuide" aria-label="안내 닫기">×</button>
+      </div>
+      <p><span class="mobile-file-badge">✓ 모바일 실행 준비 완료</span></p>
+      <p id="mobileGuideIntro">이 파일은 설치 없이 스마트폰 브라우저에서 바로 사용할 수 있습니다.</p>
+      <ol class="mobile-guide-steps" id="mobileGuideSteps">
+        <li><b>1.</b> 다운로드한 HTML 파일을 Chrome에서 엽니다.</li>
+        <li><b>2.</b> 회화 탭에서 ‘자동 재생’을 누르면 음성이 시작됩니다.</li>
+        <li><b>3.</b> 웹에 배포한 경우 Chrome 메뉴에서 ‘홈 화면에 추가’를 선택할 수 있습니다.</li>
+      </ol>
+      <button class="primary-btn wide" id="mobileGuideOkay">학습 시작</button>
+    </section>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
