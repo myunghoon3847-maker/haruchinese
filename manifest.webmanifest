@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "하루중국어 100 · 회화 자동재생",
+  "name": "하루중국어 · PC·모바일 학습판",
   "short_name": "하루중국어",
-  "description": "중국어 기초 단어 100개, 실생활 회화 표현 50개 자동 재생, Google 한국의(ko-KR) 한국어 뜻 음성과 기초 문법 20과 모바일 학습 앱",
+  "description": "PC 대시보드와 모바일 앱 UI를 각각 최적화한 중국어 회화·단어·문법 학습 앱",
   "lang": "ko-KR",
   "start_url": "./index.html",
   "scope": "./",

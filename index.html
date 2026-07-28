@@ -1,330 +1,311 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#e94b4b" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="하루중국어" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="color-scheme" content="light" />
-  <meta name="description" content="중국어 기초 단어 100개, 실생활 회화 표현 50개와 입문 문법 20과를 음성과 함께 공부하는 모바일 웹앱" />
-  <title>하루중국어 100 · Google 한국의 음성판</title>
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="favicon.ico" sizes="any" />
-  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
-  <link rel="icon" href="favicon-16.png" type="image/png" sizes="16x16" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180" />
-  <meta name="msapplication-TileImage" content="icon-512.png" />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta content="#e94b4b" name="theme-color"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="default" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="하루중국어" name="apple-mobile-web-app-title"/>
+<meta content="telephone=no" name="format-detection"/>
+<meta content="light" name="color-scheme"/>
+<meta content="PC에서는 넓은 학습 대시보드, 모바일에서는 앱형 UI로 사용하는 중국어 기초 단어 100개·회화 50개·문법 20과 학습 앱" name="description"/>
+<title>하루중국어 · PC·모바일 학습판 v1.9</title>
+<link href="manifest.webmanifest" rel="manifest"/>
+<link href="favicon.ico" rel="icon" sizes="any"/>
+<link href="favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<meta content="icon-512.png" name="msapplication-TileImage"/>
+<link href="styles.css" rel="stylesheet"/>
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar">
-      <button class="icon-btn menu-btn" id="menuBtn" aria-label="메뉴 열기">☰</button>
-      <div class="brand" aria-label="하루중국어 100">
-        <img class="brand-mark" src="icon-192.png" alt="" width="40" height="40" />
-        <div>
-          <strong>하루중국어</strong>
-          <small>100단어 · 회화 · 문법</small>
-        </div>
-      </div>
-      <button class="icon-btn" id="installBtn" aria-label="앱 설치" hidden>＋</button>
-    </header>
+<div class="app-shell">
+<header class="topbar">
+<button aria-label="메뉴 열기" class="icon-btn menu-btn" id="menuBtn">☰</button>
+<div aria-label="하루중국어 100" class="brand">
+<img alt="" class="brand-mark" height="40" src="icon-192.png" width="40"/>
+<div>
+<strong>하루중국어</strong>
+<small>100단어 · 회화 · 문법</small>
+</div>
+</div>
 
-    <aside class="drawer" id="drawer" aria-hidden="true">
-      <div class="drawer-head">
-        <div class="brand"><img class="brand-mark" src="icon-192.png" alt="" width="40" height="40" /><strong>학습 메뉴</strong></div>
-        <button class="icon-btn" id="closeDrawerBtn" aria-label="메뉴 닫기">×</button>
-      </div>
-      <nav class="drawer-nav" aria-label="주요 메뉴">
-        <button data-view="home" class="active">🏠 오늘 학습</button>
-        <button data-view="words">🗣️ 회화·어휘</button>
-        <button data-view="grammar">🧩 기초 문법</button>
-        <button data-view="cards">🃏 플래시카드</button>
-        <button data-view="quiz">✍️ 퀴즈</button>
-        <button data-view="favorites">⭐ 즐겨찾기</button>
-      </nav>
-      <div class="drawer-note">
-        <strong>음성 안내</strong>
-        <p>기기에서 지원하는 중국어·한국어·영어 TTS 음성을 사용합니다.</p>
-      </div>
-    </aside>
-    <div class="scrim" id="scrim" hidden></div>
+<div class="topbar-actions"><span class="desktop-mode-pill">PC 학습 모드</span><span class="desktop-topbar-note">넓은 화면 최적화</span><button aria-label="앱 설치" class="icon-btn" hidden="" id="installBtn">＋</button></div></header>
+<aside aria-hidden="true" class="drawer" id="drawer">
+<div class="drawer-head">
+<div class="brand"><img alt="" class="brand-mark" height="40" src="icon-192.png" width="40"/><strong>하루중국어</strong><small>학습 대시보드</small></div>
+<button aria-label="메뉴 닫기" class="icon-btn" id="closeDrawerBtn">×</button>
+</div>
+<nav aria-label="주요 메뉴" class="drawer-nav"><span class="nav-section-title">LEARNING</span>
+<button class="active" data-view="home">🏠 오늘 학습</button>
+<button data-view="words">🗣️ 회화·어휘</button>
+<button data-view="grammar">🧩 기초 문법</button>
+<button data-view="cards">🃏 플래시카드</button>
+<button data-view="quiz">✍️ 퀴즈</button>
+<button data-view="favorites">⭐ 즐겨찾기</button>
+</nav>
+<div class="desktop-library-note"><strong>학습 콘텐츠</strong><span>회화 50 · 단어 100 · 문법 20</span></div><div class="drawer-note">
+<strong>음성 안내</strong>
+<p>기기에서 지원하는 중국어·한국어·영어 TTS 음성을 사용합니다.</p>
+</div>
+</aside>
+<div class="scrim" hidden="" id="scrim"></div>
+<main>
+<section class="view active" id="homeView">
 
-    <main>
-      <section class="view active" id="homeView">
-        <div class="hero card">
-          <div class="hero-copy">
-            <span class="eyebrow">每天学一点 · 매일 조금씩</span>
-            <h1>중국어 첫걸음,<br><em>100단어</em>부터</h1>
-            <p>실생활 회화 표현 50개, 기초 단어 100개와 문법 20과를 병음·한국어식 발음·음성으로 차근차근 익혀 보세요.</p>
-            <div class="hero-actions"><button class="primary-btn" data-go="words">회화 듣기</button><button class="secondary-btn" data-go="grammar">문법 학습</button></div>
-          </div>
-          <div class="hero-badge" aria-hidden="true">
-            <span>你</span><span>好</span>
-          </div>
-        </div>
 
-        <section class="stats-grid" aria-label="학습 현황">
-          <article class="stat card"><span>학습한 단어</span><strong id="learnedCount">0</strong><small>/ 100</small></article>
-          <article class="stat card"><span>완료한 문법</span><strong id="grammarCount">0</strong><small>/ 20</small></article>
-          <article class="stat card"><span>즐겨찾기</span><strong id="favoriteCount">0</strong><small>개</small></article>
-          <article class="stat card"><span>퀴즈 정답률</span><strong id="quizRate">0%</strong><small id="quizTotal">0문제</small></article>
-        </section>
 
-        <section class="section-head">
-          <div><span class="eyebrow">TODAY</span><h2>오늘의 5단어</h2></div>
-          <button class="text-btn" id="refreshDaily">새로 뽑기 ↻</button>
-        </section>
-        <div class="daily-list" id="dailyList"></div>
 
-        <section class="section-head">
-          <div><span class="eyebrow">TODAY GRAMMAR</span><h2>오늘의 문법</h2></div>
-          <button class="text-btn" data-go="grammar">전체 문법 보기 →</button>
-        </section>
-        <div class="grammar-spot card" id="dailyGrammar"></div>
 
-        <section class="tip card">
-          <div class="tip-icon">声</div>
-          <div><strong>성조까지 함께 들어보세요</strong><p>한국어식 발음은 입문용 참고입니다. 실제 발음은 중국어 음성을 여러 번 듣고 따라 하는 것이 가장 좋습니다.</p></div>
-        </section>
-      </section>
 
-      <section class="view" id="wordsView">
-        <div class="page-title">
-          <span class="eyebrow">CONVERSATION & VOCABULARY</span>
-          <h1>회화·어휘 듣기</h1>
-          <p>실생활 표현을 자동으로 듣고, 아래에서 기초 단어를 찾아보세요.</p>
-        </div>
 
-        <section class="grammar-player conversation-player card" aria-labelledby="conversationPlayerHeading">
-          <div class="grammar-player-head">
-            <div>
-              <span class="eyebrow">EVERYDAY CONVERSATION</span>
-              <h2 id="conversationPlayerHeading">회화 표현 자동 재생</h2>
-            </div>
-            <span class="player-state" id="conversationAudioState">대기</span>
-          </div>
+<div class="home-dashboard"><div class="home-primary"><div class="hero card">
+<div class="hero-copy">
+<span class="eyebrow">每天学一点 · 매일 조금씩</span>
+<h1>중국어 첫걸음,<br/><em>100단어</em>부터</h1>
+<p>실생활 회화 표현 50개, 기초 단어 100개와 문법 20과를 병음·한국어식 발음·음성으로 차근차근 익혀 보세요.</p>
+<div class="hero-actions"><button class="primary-btn" data-go="words">회화 듣기</button><button class="secondary-btn" data-go="grammar">문법 학습</button></div>
+</div>
+<div aria-hidden="true" class="hero-badge">
+<span>你</span><span>好</span>
+</div>
+</div><section class="section-head">
+<div><span class="eyebrow">TODAY</span><h2>오늘의 5단어</h2></div>
+<button class="text-btn" id="refreshDaily">새로 뽑기 ↻</button>
+</section><div class="daily-list" id="dailyList"></div></div><aside class="home-side"><section aria-label="학습 현황" class="stats-grid">
+<article class="stat card"><span>학습한 단어</span><strong id="learnedCount">0</strong><small>/ 100</small></article>
+<article class="stat card"><span>완료한 문법</span><strong id="grammarCount">0</strong><small>/ 20</small></article>
+<article class="stat card"><span>즐겨찾기</span><strong id="favoriteCount">0</strong><small>개</small></article>
+<article class="stat card"><span>퀴즈 정답률</span><strong id="quizRate">0%</strong><small id="quizTotal">0문제</small></article>
+</section><section class="section-head">
+<div><span class="eyebrow">TODAY GRAMMAR</span><h2>오늘의 문법</h2></div>
+<button class="text-btn" data-go="grammar">전체 문법 보기 →</button>
+</section><div class="grammar-spot card" id="dailyGrammar"></div><section class="tip card">
+<div class="tip-icon">声</div>
+<div><strong>성조까지 함께 들어보세요</strong><p>한국어식 발음은 입문용 참고입니다. 실제 발음은 중국어 음성을 여러 번 듣고 따라 하는 것이 가장 좋습니다.</p></div>
+</section></aside></div></section>
+<section class="view" id="wordsView">
+<div class="page-title">
+<span class="eyebrow">CONVERSATION &amp; VOCABULARY</span>
+<h1>회화·어휘 듣기</h1>
+<p>실생활 표현을 자동으로 듣고, 아래에서 기초 단어를 찾아보세요.</p>
+</div>
 
-          <div class="grammar-player-now" aria-live="polite">
-            <small id="conversationAudioCategoryText">실생활 회화 50개를 준비했습니다.</small>
-            <strong id="conversationAudioSentence">자동 재생을 누르면 표현을 차례로 들려줍니다.</strong>
-            <span class="pinyin" id="conversationAudioPinyin"></span>
-            <span class="reading" id="conversationAudioKoPron"></span>
-            <p id="conversationAudioTranslation">중국어만 듣거나 한국어·영어 해석까지 이어서 들을 수 있습니다.</p>
-          </div>
 
-          <div class="grammar-audio-progress">
-            <div><span id="conversationAudioProgressText">0 / 0</span><span id="conversationAudioModeText">중국어 → 한국어</span></div>
-            <div class="progress-track"><span id="conversationAudioProgressBar"></span></div>
-          </div>
 
-          <div class="grammar-player-settings">
-            <label>회화 범위
+
+
+
+<div class="words-layout"><aside class="conversation-column"><section aria-labelledby="conversationPlayerHeading" class="grammar-player conversation-player card">
+<div class="grammar-player-head">
+<div>
+<span class="eyebrow">EVERYDAY CONVERSATION</span>
+<h2 id="conversationPlayerHeading">회화 표현 자동 재생</h2>
+</div>
+<span class="player-state" id="conversationAudioState">대기</span>
+</div>
+<div aria-live="polite" class="grammar-player-now">
+<small id="conversationAudioCategoryText">실생활 회화 50개를 준비했습니다.</small>
+<strong id="conversationAudioSentence">자동 재생을 누르면 표현을 차례로 들려줍니다.</strong>
+<span class="pinyin" id="conversationAudioPinyin"></span>
+<span class="reading" id="conversationAudioKoPron"></span>
+<p id="conversationAudioTranslation">중국어만 듣거나 한국어·영어 해석까지 이어서 들을 수 있습니다.</p>
+</div>
+<div class="grammar-audio-progress">
+<div><span id="conversationAudioProgressText">0 / 0</span><span id="conversationAudioModeText">중국어 → 한국어</span></div>
+<div class="progress-track"><span id="conversationAudioProgressBar"></span></div>
+</div>
+<div class="grammar-player-settings">
+<label>회화 범위
               <select id="conversationAudioCategory"></select>
-            </label>
-            <label>듣기 방식
+</label>
+<label>듣기 방식
               <select id="conversationAudioMode">
-                <option value="zh">중국어만</option>
-                <option value="zh-ko" selected>중국어 → 한국어</option>
-                <option value="zh-ko-en">중국어 → 한국어 → 영어</option>
-              </select>
-            </label>
-            <label>중국어 속도
+<option value="zh">중국어만</option>
+<option selected="" value="zh-ko">중국어 → 한국어</option>
+<option value="zh-ko-en">중국어 → 한국어 → 영어</option>
+</select>
+</label>
+<label>중국어 속도
               <select id="conversationAudioRate">
-                <option value="0.72">천천히 0.75×</option>
-                <option value="0.86" selected>보통 0.9×</option>
-                <option value="1.02">빠르게 1.0×</option>
-              </select>
-            </label>
-            <label>한국어 뜻 음성
-              <select id="conversationKoVoiceMode" aria-label="한국어 뜻 음성">
-                <option value="google-ko" selected>Google 한국의 (ko-KR)</option>
-              </select>
-            </label>
-            <label>중국어→한국어 간격
+<option value="0.72">천천히 0.75×</option>
+<option selected="" value="0.86">보통 0.9×</option>
+<option value="1.02">빠르게 1.0×</option>
+</select>
+</label>
+<label>한국어 뜻 음성
+              <select aria-label="한국어 뜻 음성" id="conversationKoVoiceMode">
+<option selected="" value="google-ko">Google 한국의 (ko-KR)</option>
+</select>
+</label>
+<label>중국어→한국어 간격
               <select id="conversationPhaseGap">
-                <option value="900">0.9초</option>
-                <option value="1500" selected>1.5초</option>
-                <option value="2200">2.2초</option>
-              </select>
-            </label>
-            <label>반복 방식
+<option value="900">0.9초</option>
+<option selected="" value="1500">1.5초</option>
+<option value="2200">2.2초</option>
+</select>
+</label>
+<label>반복 방식
               <select id="conversationAudioRepeat">
-                <option value="none">마지막에서 종료</option>
-                <option value="all">선택 범위 반복</option>
-                <option value="item">현재 표현 반복</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="grammar-player-controls">
-            <button class="player-skip" id="conversationAudioPrev" aria-label="이전 회화 표현">‹</button>
-            <button class="primary-btn grammar-play-main" id="conversationAudioPlay">▶ 자동 재생</button>
-            <button class="player-skip" id="conversationAudioNext" aria-label="다음 회화 표현">›</button>
-            <button class="secondary-btn" id="conversationAudioStop">■ 정지</button>
-          </div>
-          <p class="grammar-player-help">처음에는 자동 재생 버튼을 한 번 눌러야 합니다. 한국어는 중국어 음성과 같은 TTS 제조사·자연형 계열·성별을 우선 매칭하며, 속도와 음높이도 동일하게 재생합니다. 중국어 뒤 간격은 기본 1.5초입니다.</p>
-        </section>
-
-        <section class="section-head conversation-vocab-head">
-          <div><span class="eyebrow">BASIC VOCABULARY</span><h2>기초 단어 100</h2></div>
-        </section>
-        <div class="search-box card">
-          <span>⌕</span>
-          <input id="searchInput" type="search" placeholder="중국어, 병음, 한국어, 영어 검색" autocomplete="off" />
-          <button id="clearSearch" aria-label="검색어 지우기">×</button>
-        </div>
-        <div class="category-scroll" id="categoryFilters" aria-label="단어 카테고리"></div>
-        <div class="word-toolbar">
-          <span id="wordResultCount">100개 단어</span>
-          <label class="switch-label"><input type="checkbox" id="hideLearned" /><span>학습 완료 숨기기</span></label>
-        </div>
-        <div class="word-list" id="wordList"></div>
-      </section>
+<option value="none">마지막에서 종료</option>
+<option value="all">선택 범위 반복</option>
+<option value="item">현재 표현 반복</option>
+</select>
+</label>
+</div>
+<div class="grammar-player-controls">
+<button aria-label="이전 회화 표현" class="player-skip" id="conversationAudioPrev">‹</button>
+<button class="primary-btn grammar-play-main" id="conversationAudioPlay">▶ 자동 재생</button>
+<button aria-label="다음 회화 표현" class="player-skip" id="conversationAudioNext">›</button>
+<button class="secondary-btn" id="conversationAudioStop">■ 정지</button>
+</div>
+<p class="grammar-player-help">처음에는 자동 재생 버튼을 한 번 눌러야 합니다. 한국어는 중국어 음성과 같은 TTS 제조사·자연형 계열·성별을 우선 매칭하며, 속도와 음높이도 동일하게 재생합니다. 중국어 뒤 간격은 기본 1.5초입니다.</p>
+</section></aside><section class="vocabulary-panel"><section class="section-head conversation-vocab-head">
+<div><span class="eyebrow">BASIC VOCABULARY</span><h2>기초 단어 100</h2></div>
+</section><div class="search-box card">
+<span>⌕</span>
+<input autocomplete="off" id="searchInput" placeholder="중국어, 병음, 한국어, 영어 검색" type="search"/>
+<button aria-label="검색어 지우기" id="clearSearch">×</button>
+</div><div aria-label="단어 카테고리" class="category-scroll" id="categoryFilters"></div><div class="word-toolbar">
+<span id="wordResultCount">100개 단어</span>
+<label class="switch-label"><input id="hideLearned" type="checkbox"/><span>학습 완료 숨기기</span></label>
+</div><div class="word-list" id="wordList"></div></section></div></section>
+<section class="view" id="grammarView">
+<div class="page-title">
+<span class="eyebrow">BEGINNER GRAMMAR</span>
+<h1>기초 문법 20과</h1>
+<p>문형을 이해하고 예문을 들은 뒤 바로 연습해 보세요.</p>
+</div>
 
 
-      <section class="view" id="grammarView">
-        <div class="page-title">
-          <span class="eyebrow">BEGINNER GRAMMAR</span>
-          <h1>기초 문법 20과</h1>
-          <p>문형을 이해하고 예문을 들은 뒤 바로 연습해 보세요.</p>
-        </div>
-        <div class="grammar-progress card">
-          <div><span>문법 학습 진행률</span><strong id="grammarProgressText">0 / 20</strong></div>
-          <div class="progress-track"><span id="grammarProgressBar"></span></div>
-        </div>
-        <div class="search-box card grammar-search">
-          <span>⌕</span>
-          <input id="grammarSearchInput" type="search" placeholder="문법, 문형, 예문 검색" autocomplete="off" />
-          <button id="clearGrammarSearch" aria-label="검색어 지우기">×</button>
-        </div>
-        <div class="category-scroll" id="grammarCategoryFilters" aria-label="문법 카테고리"></div>
-        <div class="word-toolbar">
-          <span id="grammarResultCount">20개 문법</span>
-          <label class="switch-label"><input type="checkbox" id="hideGrammarCompleted" /><span>완료한 문법 숨기기</span></label>
-        </div>
-        <div class="grammar-list" id="grammarList"></div>
-      </section>
 
-      <section class="view" id="cardsView">
-        <div class="page-title compact">
-          <span class="eyebrow">FLASH CARD</span>
-          <h1>플래시카드</h1>
-          <p>카드를 눌러 뜻을 확인하세요.</p>
-        </div>
-        <div class="card-controls card">
-          <label>학습 범위
+
+
+<div class="grammar-workspace"><aside class="grammar-tools"><div class="grammar-progress card">
+<div><span>문법 학습 진행률</span><strong id="grammarProgressText">0 / 20</strong></div>
+<div class="progress-track"><span id="grammarProgressBar"></span></div>
+</div><div class="search-box card grammar-search">
+<span>⌕</span>
+<input autocomplete="off" id="grammarSearchInput" placeholder="문법, 문형, 예문 검색" type="search"/>
+<button aria-label="검색어 지우기" id="clearGrammarSearch">×</button>
+</div><div aria-label="문법 카테고리" class="category-scroll" id="grammarCategoryFilters"></div><div class="word-toolbar">
+<span id="grammarResultCount">20개 문법</span>
+<label class="switch-label"><input id="hideGrammarCompleted" type="checkbox"/><span>완료한 문법 숨기기</span></label>
+</div></aside><section class="grammar-content"><div class="grammar-list" id="grammarList"></div></section></div></section>
+<section class="view" id="cardsView">
+<div class="page-title compact">
+<span class="eyebrow">FLASH CARD</span>
+<h1>플래시카드</h1>
+<p>카드를 눌러 뜻을 확인하세요.</p>
+</div>
+
+
+
+<div class="cards-layout"><aside class="cards-side"><div class="card-controls card">
+<label>학습 범위
             <select id="cardCategory"></select>
-          </label>
-          <button class="secondary-btn" id="shuffleCards">섞기 ↻</button>
-        </div>
-        <div class="flash-wrap">
-          <button class="round-nav" id="prevCard" aria-label="이전 카드">‹</button>
-          <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="카드 뒤집기">
-            <div class="flash-inner">
-              <article class="flash-face flash-front">
-                <span class="flash-index" id="cardIndex">1 / 100</span>
-                <button class="audio-fab" id="cardSpeakZh" aria-label="중국어 음성">🔊</button>
-                <strong class="flash-hanzi" id="cardHanzi">你好</strong>
-                <span class="flash-pinyin" id="cardPinyin">nǐ hǎo</span>
-                <small>카드를 눌러 뜻 보기</small>
-              </article>
-              <article class="flash-face flash-back">
-                <span class="flash-index">뜻과 발음</span>
-                <strong id="cardKo">안녕하세요</strong>
-                <span id="cardKoPron">니 하오</span>
-                <span id="cardEn">hello</span>
-                <div class="mini-audio-row">
-                  <button id="cardSpeakKo">한국어 🔊</button>
-                  <button id="cardSpeakEn">English 🔊</button>
-                </div>
-                <small>카드를 눌러 중국어 보기</small>
-              </article>
-            </div>
-          </div>
-          <button class="round-nav" id="nextCard" aria-label="다음 카드">›</button>
-        </div>
-        <div class="flash-actions">
-          <button class="secondary-btn" id="cardFavorite">☆ 즐겨찾기</button>
-          <button class="primary-btn" id="cardLearned">✓ 외웠어요</button>
-        </div>
-      </section>
+</label>
+<button class="secondary-btn" id="shuffleCards">섞기 ↻</button>
+</div><div class="desktop-study-tip card"><span>KEYBOARD</span><strong>집중 학습 팁</strong><p>카드를 클릭하거나 Enter·Space 키로 뒤집고, 좌우 버튼으로 빠르게 반복하세요.</p></div></aside><section class="cards-stage"><div class="flash-wrap">
+<button aria-label="이전 카드" class="round-nav" id="prevCard">‹</button>
+<div aria-label="카드 뒤집기" class="flashcard" id="flashcard" role="button" tabindex="0">
+<div class="flash-inner">
+<article class="flash-face flash-front">
+<span class="flash-index" id="cardIndex">1 / 100</span>
+<button aria-label="중국어 음성" class="audio-fab" id="cardSpeakZh">🔊</button>
+<strong class="flash-hanzi" id="cardHanzi">你好</strong>
+<span class="flash-pinyin" id="cardPinyin">nǐ hǎo</span>
+<small>카드를 눌러 뜻 보기</small>
+</article>
+<article class="flash-face flash-back">
+<span class="flash-index">뜻과 발음</span>
+<strong id="cardKo">안녕하세요</strong>
+<span id="cardKoPron">니 하오</span>
+<span id="cardEn">hello</span>
+<div class="mini-audio-row">
+<button id="cardSpeakKo">한국어 🔊</button>
+<button id="cardSpeakEn">English 🔊</button>
+</div>
+<small>카드를 눌러 중국어 보기</small>
+</article>
+</div>
+</div>
+<button aria-label="다음 카드" class="round-nav" id="nextCard">›</button>
+</div><div class="flash-actions">
+<button class="secondary-btn" id="cardFavorite">☆ 즐겨찾기</button>
+<button class="primary-btn" id="cardLearned">✓ 외웠어요</button>
+</div></section></div></section>
+<section class="view" id="quizView">
+<div class="page-title compact">
+<span class="eyebrow">QUIZ</span>
+<h1>4지선다 퀴즈</h1>
+<p>중국어를 보고 알맞은 뜻을 골라보세요.</p>
+</div>
 
-      <section class="view" id="quizView">
-        <div class="page-title compact">
-          <span class="eyebrow">QUIZ</span>
-          <h1>4지선다 퀴즈</h1>
-          <p>중국어를 보고 알맞은 뜻을 골라보세요.</p>
-        </div>
-        <div class="quiz-panel card">
-          <div class="quiz-top">
-            <span id="quizProgress">1 / 10</span>
-            <span id="quizScore">점수 0</span>
-          </div>
-          <div class="progress-track"><span id="quizBar"></span></div>
-          <div class="quiz-question">
-            <button class="audio-fab" id="quizSpeak" aria-label="문제 중국어 음성">🔊</button>
-            <strong id="quizHanzi">你好</strong>
-            <span id="quizPinyin">nǐ hǎo</span>
-          </div>
-          <div class="quiz-options" id="quizOptions"></div>
-          <div class="quiz-feedback" id="quizFeedback" aria-live="polite"></div>
-          <button class="primary-btn wide" id="nextQuiz" disabled>다음 문제</button>
-        </div>
-        <div class="quiz-result card" id="quizResult" hidden>
-          <div class="result-emoji">🎉</div>
-          <h2>퀴즈 완료!</h2>
-          <strong id="resultScore">8 / 10</strong>
-          <p id="resultMessage">아주 잘했어요.</p>
-          <button class="primary-btn" id="restartQuiz">다시 풀기</button>
-        </div>
-      </section>
 
-      <section class="view" id="favoritesView">
-        <div class="page-title">
-          <span class="eyebrow">FAVORITES</span>
-          <h1>즐겨찾기</h1>
-          <p>헷갈리는 단어만 모아 반복하세요.</p>
-        </div>
-        <div class="word-list" id="favoriteList"></div>
-        <div class="empty-state card" id="favoriteEmpty" hidden>
-          <span>☆</span><h2>아직 저장한 단어가 없어요</h2><p>단어 오른쪽 별표를 눌러 추가해 보세요.</p>
-          <button class="primary-btn" data-go="words">단어 보러 가기</button>
-        </div>
-      </section>
-    </main>
-
-    <nav class="bottom-nav" aria-label="하단 메뉴">
-      <button data-view="home" class="active"><span>⌂</span>홈</button>
-      <button data-view="words"><span>声</span>회화</button>
-      <button data-view="grammar"><span>法</span>문법</button>
-      <button data-view="cards"><span>▣</span>카드</button>
-      <button data-view="quiz"><span>✓</span>퀴즈</button>
-      <button data-view="favorites"><span>☆</span>저장</button>
-    </nav>
-  </div>
-
-  <div class="mobile-guide" id="mobileGuide" hidden role="dialog" aria-modal="true" aria-labelledby="mobileGuideTitle">
-    <section class="mobile-guide-card card">
-      <div class="mobile-guide-head">
-        <h2 id="mobileGuideTitle">모바일에서 사용하는 방법</h2>
-        <button class="mobile-guide-close" id="closeMobileGuide" aria-label="안내 닫기">×</button>
-      </div>
-      <p><span class="mobile-file-badge">✓ 모바일 실행 준비 완료</span></p>
-      <p id="mobileGuideIntro">이 파일은 설치 없이 스마트폰 브라우저에서 바로 사용할 수 있습니다.</p>
-      <ol class="mobile-guide-steps" id="mobileGuideSteps">
-        <li><b>1.</b> 다운로드한 HTML 파일을 Chrome에서 엽니다.</li>
-        <li><b>2.</b> 회화 탭에서 ‘자동 재생’을 누르면 음성이 시작됩니다.</li>
-        <li><b>3.</b> 웹에 배포한 경우 Chrome 메뉴에서 ‘홈 화면에 추가’를 선택할 수 있습니다.</li>
-      </ol>
-      <button class="primary-btn wide" id="mobileGuideOkay">학습 시작</button>
-    </section>
-  </div>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js"></script>
+<div class="quiz-workspace"><aside class="quiz-guide card"><span class="eyebrow">STUDY FLOW</span><h2>10문제 집중 퀴즈</h2><p>중국어를 먼저 읽고 음성을 확인한 다음 뜻을 선택하세요.</p><ul><li>문제당 한 번 천천히 읽기</li><li>오답 단어는 즐겨찾기에 저장</li><li>퀴즈 후 플래시카드로 복습</li></ul></aside><section class="quiz-main"><div class="quiz-panel card">
+<div class="quiz-top">
+<span id="quizProgress">1 / 10</span>
+<span id="quizScore">점수 0</span>
+</div>
+<div class="progress-track"><span id="quizBar"></span></div>
+<div class="quiz-question">
+<button aria-label="문제 중국어 음성" class="audio-fab" id="quizSpeak">🔊</button>
+<strong id="quizHanzi">你好</strong>
+<span id="quizPinyin">nǐ hǎo</span>
+</div>
+<div class="quiz-options" id="quizOptions"></div>
+<div aria-live="polite" class="quiz-feedback" id="quizFeedback"></div>
+<button class="primary-btn wide" disabled="" id="nextQuiz">다음 문제</button>
+</div><div class="quiz-result card" hidden="" id="quizResult">
+<div class="result-emoji">🎉</div>
+<h2>퀴즈 완료!</h2>
+<strong id="resultScore">8 / 10</strong>
+<p id="resultMessage">아주 잘했어요.</p>
+<button class="primary-btn" id="restartQuiz">다시 풀기</button>
+</div></section></div></section>
+<section class="view favorites-view" id="favoritesView">
+<div class="page-title">
+<span class="eyebrow">FAVORITES</span>
+<h1>즐겨찾기</h1>
+<p>헷갈리는 단어만 모아 반복하세요.</p>
+</div>
+<div class="word-list" id="favoriteList"></div>
+<div class="empty-state card" hidden="" id="favoriteEmpty">
+<span>☆</span><h2>아직 저장한 단어가 없어요</h2><p>단어 오른쪽 별표를 눌러 추가해 보세요.</p>
+<button class="primary-btn" data-go="words">단어 보러 가기</button>
+</div>
+</section>
+</main>
+<nav aria-label="하단 메뉴" class="bottom-nav">
+<button class="active" data-view="home"><span>⌂</span>홈</button>
+<button data-view="words"><span>声</span>회화</button>
+<button data-view="grammar"><span>法</span>문법</button>
+<button data-view="cards"><span>▣</span>카드</button>
+<button data-view="quiz"><span>✓</span>퀴즈</button>
+<button data-view="favorites"><span>☆</span>저장</button>
+</nav>
+</div>
+<div aria-labelledby="mobileGuideTitle" aria-modal="true" class="mobile-guide" hidden="" id="mobileGuide" role="dialog">
+<section class="mobile-guide-card card">
+<div class="mobile-guide-head">
+<h2 id="mobileGuideTitle">모바일에서 사용하는 방법</h2>
+<button aria-label="안내 닫기" class="mobile-guide-close" id="closeMobileGuide">×</button>
+</div>
+<p><span class="mobile-file-badge">✓ 모바일 실행 준비 완료</span></p>
+<p id="mobileGuideIntro">이 파일은 설치 없이 스마트폰 브라우저에서 바로 사용할 수 있습니다.</p>
+<ol class="mobile-guide-steps" id="mobileGuideSteps">
+<li><b>1.</b> 다운로드한 HTML 파일을 Chrome에서 엽니다.</li>
+<li><b>2.</b> 회화 탭에서 ‘자동 재생’을 누르면 음성이 시작됩니다.</li>
+<li><b>3.</b> 웹에 배포한 경우 Chrome 메뉴에서 ‘홈 화면에 추가’를 선택할 수 있습니다.</li>
+</ol>
+<button class="primary-btn wide" id="mobileGuideOkay">학습 시작</button>
+</section>
+</div>
+<div aria-live="polite" class="toast" id="toast" role="status"></div>
+<script src="app.js"></script>
 </body>
 </html>

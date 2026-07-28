@@ -417,3 +417,176 @@ main {
   .conversation-player .grammar-player-now { min-height:176px; }
   .conversation-player .grammar-player-now strong { font-size:25px; }
 }
+
+
+/* v1.9 PC·모바일 분리형 반응형 UI */
+.topbar-actions { display:flex; align-items:center; gap:10px; }
+.desktop-mode-pill, .desktop-topbar-note, .nav-section-title, .desktop-library-note, .desktop-study-tip, .quiz-guide { display:none; }
+.home-dashboard, .words-layout, .grammar-workspace, .cards-layout, .quiz-workspace { min-width:0; }
+
+@media (min-width:1024px) {
+  :root { --radius:16px; --shadow:0 7px 22px rgba(71,45,45,.055); }
+  html { background:#f6f1ee; }
+  body { background:#f6f1ee; overflow-x:hidden; }
+  .app-shell {
+    width:100%; max-width:none; min-height:100vh; overflow:visible;
+    display:grid; grid-template-columns:236px minmax(0,1fr); grid-template-rows:64px minmax(0,1fr);
+    background:#f8f5f3;
+  }
+  .drawer {
+    position:sticky; inset:auto; top:0; grid-column:1; grid-row:1 / 3;
+    width:236px; height:100vh; padding:18px 14px; transform:none !important;
+    display:flex; flex-direction:column; overflow:auto; box-shadow:none;
+    border-right:1px solid var(--line); background:#fff; z-index:45;
+  }
+  .drawer-head { padding:1px 5px 13px; border-bottom:1px solid var(--line); }
+  .drawer-head .brand { gap:10px; }
+  .drawer-head .brand strong { font-size:16px; }
+  .drawer-head .brand small { font-size:10px; }
+  #closeDrawerBtn, .menu-btn, .scrim { display:none !important; }
+  .nav-section-title { display:block; padding:0 10px 5px; color:#a49898; font-size:10px; font-weight:900; letter-spacing:.15em; }
+  .drawer-nav { margin-top:15px; gap:4px; }
+  .drawer-nav button { padding:11px 12px; border-radius:11px; font-size:13px; }
+  .drawer-nav button:hover { background:#faf5f3; color:var(--ink); }
+  .drawer-nav button.active { box-shadow:inset 3px 0 0 var(--red); }
+  .desktop-library-note { display:grid; gap:4px; margin:18px 4px 8px; padding:12px; border-radius:13px; background:#faf6f4; }
+  .desktop-library-note strong { font-size:12px; }
+  .desktop-library-note span { color:var(--muted); font-size:10px; line-height:1.5; }
+  .drawer-note { position:static; left:auto; right:auto; bottom:auto; margin:8px 4px 0; padding:13px; border-radius:13px; }
+  .drawer-note strong { font-size:12px; }
+  .drawer-note p { font-size:10px; }
+  .topbar {
+    grid-column:2; grid-row:1; position:sticky; top:0; height:64px; padding:0 24px;
+    background:rgba(255,255,255,.94); border-bottom:1px solid var(--line); z-index:35;
+  }
+  .topbar .brand-mark { width:34px; height:34px; border-radius:10px; }
+  .topbar .brand strong { font-size:14px; }
+  .topbar .brand small { font-size:10px; }
+  .desktop-mode-pill { display:inline-flex; align-items:center; height:27px; padding:0 10px; border-radius:999px; background:#edf8f2; color:#277651; font-size:10px; font-weight:900; }
+  .desktop-topbar-note { display:inline; color:var(--muted); font-size:11px; }
+  .topbar .icon-btn { width:36px; height:36px; border-radius:11px; font-size:20px; box-shadow:none; border:1px solid var(--line); }
+  main {
+    grid-column:2; grid-row:2; width:100%; min-width:0; padding:18px 24px 38px;
+    max-width:1700px; margin:0 auto;
+  }
+  .bottom-nav { display:none !important; }
+  .view.active { width:100%; }
+  .card { border-radius:16px; box-shadow:var(--shadow); }
+  .page-title { display:flex; align-items:end; justify-content:space-between; gap:22px; padding:0 2px 14px; }
+  .page-title.compact { text-align:left; }
+  .page-title h1 { margin:3px 0 0; font-size:28px; }
+  .page-title p { max-width:520px; text-align:right; font-size:12px; }
+  .eyebrow { font-size:10px; }
+
+  /* PC home dashboard */
+  .home-dashboard { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(300px,.62fr); gap:16px; align-items:start; }
+  .home-primary, .home-side { min-width:0; }
+  .hero { min-height:264px; padding:27px; grid-template-columns:1.55fr .45fr; gap:18px; }
+  .hero h1 { margin:9px 0 10px; font-size:clamp(34px,3.25vw,48px); }
+  .hero p { max-width:680px; margin-bottom:18px; font-size:13px; line-height:1.7; }
+  .hero-badge { width:142px; height:142px; font-size:42px; }
+  .hero-actions { display:flex; gap:8px; }
+  .primary-btn { padding:11px 16px; border-radius:11px; }
+  .secondary-btn { padding:10px 14px; border-radius:11px; }
+  .stats-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin:0 0 14px; }
+  .stat { min-height:91px; padding:15px; }
+  .stat span { font-size:11px; }
+  .stat strong { margin-top:5px; font-size:25px; }
+  .section-head { margin:20px 2px 10px; }
+  .section-head h2 { font-size:19px; }
+  .daily-list { gap:8px; }
+  .daily-card { padding:13px 8px; border-radius:14px; }
+  .daily-card strong { margin:8px 0 3px; font-size:23px; }
+  .daily-card small { margin-top:7px; font-size:10px; }
+  .home-side .section-head { margin-top:6px; }
+  .grammar-spot { padding:17px; }
+  .tip { align-items:flex-start; padding:16px; margin-top:12px; }
+  .tip-icon { width:40px; height:40px; border-radius:12px; }
+  .tip p { font-size:11px; }
+
+  /* PC conversation + vocabulary workspace */
+  .words-layout { display:grid; grid-template-columns:minmax(340px,.72fr) minmax(0,1.6fr); gap:17px; align-items:start; }
+  .conversation-column { position:sticky; top:82px; max-height:calc(100vh - 102px); overflow:auto; scrollbar-width:thin; padding-right:2px; }
+  .conversation-player { margin:0; padding:17px; }
+  .grammar-player-head h2 { font-size:19px; }
+  .grammar-player-now { min-height:128px; margin:12px 0; padding:14px; border-radius:13px; }
+  .grammar-player-now strong { margin:6px 0 3px; font-size:22px; }
+  .grammar-player-settings { grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; }
+  .grammar-player-settings select { height:38px; border-radius:9px; font-size:11px; }
+  .grammar-player-controls { margin-top:12px; gap:6px; }
+  .player-skip { width:40px; height:40px; border-radius:10px; }
+  .grammar-play-main { min-width:126px; }
+  .grammar-player-help { font-size:9px; }
+  .vocabulary-panel { min-width:0; }
+  .conversation-vocab-head { margin:0 2px 10px; }
+  .search-box { padding:9px 12px; border-radius:13px; }
+  .category-scroll { flex-wrap:wrap; overflow:visible; padding:11px 1px 6px; }
+  .category-scroll button { padding:7px 10px; font-size:11px; }
+  .word-toolbar { margin:6px 2px 9px; font-size:11px; }
+  .word-list { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .word-card { grid-template-columns:auto minmax(0,1fr); gap:10px; padding:12px; border-radius:13px; }
+  .word-hanzi strong { font-size:22px; }
+  .word-meta { gap:3px 8px; font-size:11px; }
+  .word-actions { grid-column:2; justify-content:flex-end; }
+  .speak-btn { width:38px; height:38px; border-radius:11px; }
+  .word-actions button { width:34px; height:34px; border-radius:9px; }
+
+  /* PC grammar workspace */
+  .grammar-workspace { display:grid; grid-template-columns:286px minmax(0,1fr); gap:17px; align-items:start; }
+  .grammar-tools { position:sticky; top:82px; }
+  .grammar-tools .grammar-progress { margin:0 0 10px; padding:15px; }
+  .grammar-tools .grammar-search { margin-top:0; }
+  .grammar-tools .category-scroll { max-height:210px; overflow:auto; align-content:flex-start; }
+  .grammar-tools .word-toolbar { display:grid; gap:8px; align-items:start; }
+  .grammar-list { gap:9px; }
+  .grammar-card summary { padding:15px 16px; }
+  .grammar-body { padding:17px; }
+  .grammar-examples { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .grammar-example strong { font-size:18px; }
+  .grammar-practice { padding:14px; }
+
+  /* PC flashcards */
+  .cards-layout { display:grid; grid-template-columns:250px minmax(0,1fr); gap:18px; align-items:start; max-width:1120px; margin:0 auto; }
+  .cards-side { position:sticky; top:82px; }
+  .card-controls { max-width:none; margin:0; display:grid; align-items:stretch; padding:16px; }
+  .card-controls label { width:100%; }
+  .card-controls .secondary-btn { width:100%; }
+  .desktop-study-tip { display:block; margin-top:10px; padding:16px; }
+  .desktop-study-tip span { color:var(--red); font-size:9px; font-weight:900; letter-spacing:.12em; }
+  .desktop-study-tip strong { display:block; margin:6px 0; font-size:14px; }
+  .desktop-study-tip p { margin:0; color:var(--muted); font-size:11px; line-height:1.65; }
+  .cards-stage { min-width:0; }
+  .flash-wrap { grid-template-columns:48px minmax(0,620px) 48px; }
+  .flashcard { height:min(500px,calc(100vh - 205px)); min-height:390px; }
+
+  /* PC quiz */
+  .quiz-workspace { display:grid; grid-template-columns:250px minmax(0,760px); justify-content:center; gap:18px; align-items:start; }
+  .quiz-guide { display:block; position:sticky; top:82px; padding:18px; }
+  .quiz-guide h2 { margin:8px 0; font-size:20px; }
+  .quiz-guide p, .quiz-guide li { color:var(--muted); font-size:11px; line-height:1.7; }
+  .quiz-guide ul { margin:12px 0 0; padding-left:18px; }
+  .quiz-main { min-width:0; }
+  .quiz-panel, .quiz-result { max-width:none; margin:0; }
+  .quiz-options { grid-template-columns:repeat(2,minmax(0,1fr)); }
+
+  /* PC favorites */
+  .favorites-view .word-list { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .empty-state { max-width:620px; margin:30px auto; }
+}
+
+@media (min-width:1500px) {
+  .app-shell { grid-template-columns:248px minmax(0,1fr); }
+  .drawer { width:248px; }
+  main { padding-left:30px; padding-right:30px; }
+  .words-layout { grid-template-columns:400px minmax(0,1fr); }
+  .word-list { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .favorites-view .word-list { grid-template-columns:repeat(4,minmax(0,1fr)); }
+}
+
+@media (max-width:1023px) {
+  .topbar-actions .desktop-mode-pill, .topbar-actions .desktop-topbar-note { display:none; }
+  .home-dashboard, .words-layout, .grammar-workspace, .cards-layout, .quiz-workspace { display:block; }
+  .conversation-column, .grammar-tools, .cards-side { position:static; max-height:none; overflow:visible; }
+  .desktop-study-tip, .quiz-guide { display:none; }
+  .cards-stage { margin-top:0; }
+}

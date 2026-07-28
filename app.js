@@ -480,11 +480,18 @@ function stopConversationPlayback(silent=false){
   if(!silent) showToast('자동 재생을 정지했습니다.');
 }
 
+function isDesktopLayout(){ return window.matchMedia('(min-width: 1024px)').matches; }
+function syncResponsiveNavigation(){
+  const drawer=$('#drawer'); const scrim=$('#scrim');
+  if(isDesktopLayout()){ drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); scrim.hidden=true; }
+  else { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); scrim.hidden=true; }
+}
+
 function navigate(view){
   state.view=view;
   $$('.view').forEach(v=>v.classList.toggle('active',v.id===`${view}View`));
   $$('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
-  closeDrawer();
+  if(!isDesktopLayout()) closeDrawer();
   if(view==='home') renderHome();
   if(view==='words') renderWords();
   if(view==='grammar') renderGrammar();
@@ -494,8 +501,8 @@ function navigate(view){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function openDrawer(){ $('#drawer').classList.add('open'); $('#drawer').setAttribute('aria-hidden','false'); $('#scrim').hidden=false; }
-function closeDrawer(){ $('#drawer').classList.remove('open'); $('#drawer').setAttribute('aria-hidden','true'); $('#scrim').hidden=true; }
+function openDrawer(){ if(isDesktopLayout()){ syncResponsiveNavigation(); return; } $('#drawer').classList.add('open'); $('#drawer').setAttribute('aria-hidden','false'); $('#scrim').hidden=false; }
+function closeDrawer(){ if(isDesktopLayout()){ syncResponsiveNavigation(); return; } $('#drawer').classList.remove('open'); $('#drawer').setAttribute('aria-hidden','true'); $('#scrim').hidden=true; }
 
 function renderStats(){
   $('#learnedCount').textContent=state.learned.size;
@@ -843,6 +850,7 @@ function bindEvents(){
   $('#mobileGuideOkay').onclick=closeMobileGuide;
   $('#mobileGuide').addEventListener('click',e=>{if(e.target===$('#mobileGuide'))closeMobileGuide();});
   window.addEventListener('appinstalled',()=>{showToast('앱이 설치되었습니다.');$('#installBtn').hidden=true;});
+  window.addEventListener('resize',syncResponsiveNavigation);
   window.addEventListener('beforeunload',()=>{if('speechSynthesis' in window)speechSynthesis.cancel();});
 }
 
@@ -859,7 +867,7 @@ function init(){
   }
   if(WORDS.length!==100) console.error(`단어 수 오류: ${WORDS.length}`);
   if(CONVERSATIONS.length!==50) console.error(`회화 표현 수 오류: ${CONVERSATIONS.length}`);
-  populateConversationCategories(); restoreConversationAudioPreferences(); populateCardCategories(); bindEvents(); updateMobileInstallButton(); renderHome(); renderCategoryFilters(); renderWords(); renderGrammarFilters(); renderGrammar(); resetConversationAudioQueue(true); renderCard(); renderFavorites(); startQuiz(); navigate('home');
+  syncResponsiveNavigation(); populateConversationCategories(); restoreConversationAudioPreferences(); populateCardCategories(); bindEvents(); updateMobileInstallButton(); renderHome(); renderCategoryFilters(); renderWords(); renderGrammarFilters(); renderGrammar(); resetConversationAudioQueue(true); renderCard(); renderFavorites(); startQuiz(); navigate('home');
   if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 }
 init();
